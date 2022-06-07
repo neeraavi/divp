@@ -6,10 +6,31 @@
 #include "vectorAndMapUtils.hpp"
 #include <iostream>
 #include <map>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
-//int main()
+void init(map<string, double> &ymTransTotalMap)
+{
+    const auto du  = dateUtils();
+    const auto thisYear = du.getCurrentYear();
+    const int startYear = 2017;
+    ostringstream out;
+    out <<  std::setfill('0') ;
+    for (auto y=startYear; y<=thisYear; ++y)
+    {
+        for (auto m=1; m<=12; ++m)
+        {
+            out << std::setw(2) << m;
+            auto ym=to_string(y) + "-" + out.str();
+            out.str("");
+            //cout<<ym<<endl;
+            ymTransTotalMap.emplace(ym,0);
+        }
+    }
+}
+
 int main(int argc, char *argv[])
 {
      if(argc<2)
@@ -42,28 +63,31 @@ int main(int argc, char *argv[])
 
    const auto aktFile = path+"akt.txt";
    const auto tVec = readFile(aktFile);
+   map<string, double> yearMonthTransactionTotalMap{};
+   init(yearMonthTransactionTotalMap);
    // printLines(transactions);
    map<string, Transaction> transactionsMap{};
-   map<string, double> yearMonthTransactionTotal{};
-   for (const auto l : tVec)
+
+   for (const auto &l : tVec)
    {
       const auto t = Transaction{l};
       transactionsMap.emplace(t.ticker, t);
       cout << t;
-      const auto it = yearMonthTransactionTotal.find(t.ym);
+      const auto it = yearMonthTransactionTotalMap.find(t.ym);
       const int factor = (t.transactionType == TransactionType::buy) ? 1 : -1;
-      if (it != yearMonthTransactionTotal.end())
+      if (it != yearMonthTransactionTotalMap.end())
       {
          it->second += factor * t.cost;
       }
       else
       {
-         yearMonthTransactionTotal.emplace(t.ym, factor * t.cost);
+         yearMonthTransactionTotalMap.emplace(t.ym, factor * t.cost);
       }
    }
-   for (const auto &[key, value] : yearMonthTransactionTotal)
+   for (const auto &[key, value] : yearMonthTransactionTotalMap)
    {
       cout << key << ": " << value << endl;
    }
    return 0;
 }
+

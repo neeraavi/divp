@@ -45,9 +45,9 @@ linesAsVector readFile(const string &filename)
 
 void printLines(const linesAsVector &lines)
 {
-   for (const auto l : lines)
+   for (const auto &l : lines)
    {
-      for (const auto p : l)
+      for (const auto &p : l)
       {
          cout << p << " -- ";
       }
@@ -57,7 +57,7 @@ void printLines(const linesAsVector &lines)
 
 void printStringVector(std::vector<std::string> v)
 {
-   for (const auto item : v)
+   for (const auto &item : v)
    {
       cout << item << ",";
    }
