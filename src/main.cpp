@@ -1,5 +1,6 @@
 //#include "Config.h"
 #include "fileUtils.hpp"
+#include "dateUtils.hpp"
 #include "name.hpp"
 #include "transaction.hpp"
 #include "vectorAndMapUtils.hpp"
@@ -8,11 +9,18 @@
 
 using namespace std;
 
-int main()
+//int main()
+int main(int argc, char *argv[])
 {
+     if(argc<2)
+     {
+         cout << "Usage: divp <path/to/div>" << endl;
+         return 1;
+     }
+     string path{argv[1]};
    // cout << "dv: Version " << dv_VERSION_MAJOR << "." << dv_VERSION_MINOR
    //      << endl;
-   const auto namesFile = "/home/iyerns/iyer/div/names.txt";
+   const string namesFile = path+"names.txt";
    const auto namesVec = readFile(namesFile);
    printLines(namesVec);
 
@@ -32,7 +40,7 @@ int main()
       printStringVector(value);
    }
 
-   const auto aktFile = "/home/iyerns/iyer/div/akt.txt";
+   const auto aktFile = path+"akt.txt";
    const auto tVec = readFile(aktFile);
    // printLines(transactions);
    map<string, Transaction> transactionsMap{};

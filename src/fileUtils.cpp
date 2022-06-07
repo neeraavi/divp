@@ -3,9 +3,9 @@
 #include <fstream>
 #include <iostream>
 #include <regex>
-#include <stdexcept>
 #include <string>
 #include <vector>
+#include <cstdlib>
 
 using namespace std;
 
@@ -14,8 +14,8 @@ linesAsVector readFile(const string &filename)
    ifstream inFile(filename);
    if (!inFile.good())
    {
-      // cout << filename << " not found!";
-      throw std::runtime_error(filename + std::string(" not found"));
+      cout << filename << " not found!" << endl;
+      std::exit(EXIT_FAILURE);
    }
 
    linesAsVector lines;
