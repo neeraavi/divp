@@ -1,0 +1,11 @@
+UseTab: Never
+BasedOnStyle: LLVM
+IndentWidth: 3
+#AlignAfterOpenBracket: Align
+AlignAfterOpenBracket: AlwaysBreak
+BreakBeforeBraces: Allman
+BinPackArguments: false
+BinPackParameters: false
+ExperimentalAutoDetectBinPacking: false
+AllowAllParametersOfDeclarationOnNextLine: false
+BreakConstructorInitializers: BeforeComma
