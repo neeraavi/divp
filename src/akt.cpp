@@ -7,14 +7,14 @@
 
 using namespace std;
 
-Akt::Akt(string pathToAktFile)
+AktFileProcessor::AktFileProcessor(string pathToAktFile)
 {
    tVec = readFile(pathToAktFile);
    initialize();
    fillTransactionMap();
 }
 
-void Akt::initialize()
+void AktFileProcessor::initialize()
 {
    const auto du = dateUtils();
    const auto thisYear = du.getCurrentYear();
@@ -33,7 +33,7 @@ void Akt::initialize()
    }
 }
 
-void Akt::fillTransactionMap()
+void AktFileProcessor::fillTransactionMap()
 {
    for (const auto &l : tVec)
    {
@@ -53,7 +53,7 @@ void Akt::fillTransactionMap()
    }
 }
 
-void Akt::print() const
+void AktFileProcessor::print() const
 {
    for (const auto &[key, value] : yearMonthTransactionTotalMap)
    {

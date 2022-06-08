@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 
-class Akt
+class AktFileProcessor
 {
    void initialize();
    void fillTransactionMap();
@@ -12,7 +12,7 @@ class Akt
    linesAsVector tVec{};
 
  public:
-   Akt(std::string pathToAktFile);
+   AktFileProcessor(std::string pathToAktFile);
    void print() const;
 
    std::map<std::string, double> yearMonthTransactionTotalMap{};

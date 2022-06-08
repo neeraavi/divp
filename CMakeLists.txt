@@ -15,4 +15,12 @@ src/akt.cpp
 src/nameFileProcessor.cpp
 src/transaction.cpp
 src/vectorAndMapUtils.cpp
+include/divp/akt.hpp
+include/divp/dateUtils.hpp
+include/divp/fileUtils.hpp
+include/divp/name.hpp
+include/divp/nameFileProcessor.hpp
+include/divp/strUtils.hpp
+include/divp/transaction.hpp
+include/divp/vectorAndMapUtils.hpp
 )

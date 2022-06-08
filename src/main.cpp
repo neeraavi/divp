@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
    nfp.print();
 
    const auto aktFile = path + "akt.txt";
-   const auto akt = Akt(aktFile);
+   const auto akt = AktFileProcessor(aktFile);
    akt.print();
 
    return 0;
