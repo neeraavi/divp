@@ -11,6 +11,8 @@ src/name.cpp
 src/dateUtils.cpp 
 src/fileUtils.cpp 
 src/strUtils.cpp
+src/akt.cpp
+src/nameFileProcessor.cpp
 src/transaction.cpp
 src/vectorAndMapUtils.cpp
 )
