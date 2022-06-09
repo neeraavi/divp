@@ -6,19 +6,17 @@
 #include <iostream>
 #include "vectorAndMapUtils.hpp"
 
-using namespace std;
-
 class Name
 {
    std::map<std::string, Name> nameMap{};
    StringVectorMap sectorMap{};
 
  public:
-   std::string ticker{};
-   std::string name{};
-   std::string sector{};
+   std::string ticker{};//NOLINT
+   std::string name{};//NOLINT
+   std::string sector{};//NOLINT
 
-   Name(std::vector<std::string>);
+   explicit Name(std::vector<std::string>vec );
    void initialize();
-   friend std::ostream &operator<<(std::ostream &, Name const &);
+   friend std::ostream &operator<<(std::ostream & o, Name const &n);
 };

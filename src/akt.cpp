@@ -7,7 +7,7 @@
 
 using namespace std;
 
-AktFileProcessor::AktFileProcessor(string pathToAktFile)
+AktFileProcessor::AktFileProcessor(const string& pathToAktFile)
 {
    tVec = readFile(pathToAktFile);
    initialize();

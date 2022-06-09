@@ -25,7 +25,7 @@ linesAsVector readFile(const string &filename)
    while (inFile)
    {
       getline(inFile, line);
-      if ((line.rfind("#", 0) == 0) ||
+      if ((line.rfind('#', 0) == 0) ||
           (line.find_first_not_of(' ') == std::string::npos))
       {
          continue;
@@ -55,7 +55,7 @@ void printLines(const linesAsVector &lines)
    }
 }
 
-void printStringVector(std::vector<std::string> v)
+void printStringVector(const std::vector<std::string> &v)
 {
    for (const auto &item : v)
    {

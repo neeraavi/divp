@@ -4,12 +4,12 @@
 
 using namespace std;
 
-NameFileProcessor::NameFileProcessor(std::string pathToNameFile)
+NameFileProcessor::NameFileProcessor(const std::string &pathToNameFile)
 {
    initialize(pathToNameFile);
 }
 
-void NameFileProcessor::initialize(std::string namesFile)
+void NameFileProcessor::initialize(const std::string &namesFile)
 {
    const auto namesVec = readFile(namesFile);
    printLines(namesVec);

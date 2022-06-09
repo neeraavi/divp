@@ -1,0 +1,26 @@
+# -*- mode: yaml; -*-
+---
+# enable all checks, but then blacklist as needed
+# https://clang.llvm.org/extra/clang-tidy/checks/list.html
+
+Checks: "*,
+-*braces-around-statements,
+  readability-braces-around-statements,
+-clang-analyzer-alpha.*,
+-modernize-use-trailing-return-type,
+-fuchsia-default-arguments-calls,
+-google-build-using-namespace,
+-cppcoreguidelines-avoid-magic-numbers,
+-readability-magic-numbers
+-google-build-using-namespace,
+-google-readability-todo,
+-llvm-include-order,
+-cppcoreguidelines-pro-bounds-pointer-arithmetic,
+-fuchsia-overloaded-operator,
+-fuchsia-statically-constructed-objects,
+-cert-err58-cpp,
+-readability-magic-numbers,
+-llvm-header-guard,
+-google-runtime-references,
+-modernize-use-nodiscard,
+"

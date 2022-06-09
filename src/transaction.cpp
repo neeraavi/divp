@@ -6,10 +6,10 @@ static const auto buy = std::regex("buy", std::regex_constants::icase);
 
 Transaction::Transaction(vector<string> v)
     : ticker{v[0]}
-    , year{(unsigned int)stoi(v[1])}
-    , month{(unsigned int)stoi(v[2])}
+    , year{static_cast<unsigned int>(stoi(v[1]))}
+    , month{static_cast<unsigned int>(stoi(v[2]))}
     , transactionType{regex_match(v[4], buy) ? TransactionType::buy : TransactionType::sell}
-    , howMany{(unsigned int)stoi(v[5])}
+    , howMany{static_cast<unsigned int>(stoi(v[5]))}
     , cost{stod(v[6])}
 {
    ym = v[1] + "-" + v[2];

@@ -8,9 +8,9 @@ class NameFileProcessor
    std::map<std::string, Name> nameMap{};
    StringVectorMap sectorMap{};
 
-   void initialize(std::string);
+   void initialize(const std::string& namesFile);
 
  public:
-   NameFileProcessor(std::string);
+   explicit NameFileProcessor(const std::string &namesFile);
    void print() const;
 };

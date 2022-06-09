@@ -9,12 +9,12 @@ class AktFileProcessor
    void initialize();
    void fillTransactionMap();
 
-   linesAsVector tVec{};
+   linesAsVector tVec{}; //NOLINT
+   std::map<std::string, double> yearMonthTransactionTotalMap{}; //NOLINT
+   std::map<std::string, Transaction> transactionsMap{}; //NOLINT
 
  public:
-   AktFileProcessor(std::string pathToAktFile);
+   explicit AktFileProcessor(const std::string& pathToAktFile);
    void print() const;
 
-   std::map<std::string, double> yearMonthTransactionTotalMap{};
-   std::map<std::string, Transaction> transactionsMap{};
 };
