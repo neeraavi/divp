@@ -1,12 +1,8 @@
-#include <chrono>
 #include "dateUtils.hpp"
+#include <chrono>
 
-
-int dateUtils::getCurrentYear() const
-{
-    return static_cast<int>(ymd.year());
-}
+int dateUtils::getCurrentYear() const { return static_cast<int>(ymd.year()); }
 unsigned dateUtils::getCurrentMonth() const
 {
-    return static_cast<unsigned>(ymd.month());
+   return static_cast<unsigned>(ymd.month());
 }

@@ -14,7 +14,8 @@ std::string trim(const std::string &s) { return ltrim(rtrim(s)); }
 
 std::string toLower(std::string &data)
 {
-   //NOLINTNEXTLINE(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
+   // NOLINTNEXTLINE(bugprone-narrowing-conversions,
+   // cppcoreguidelines-narrowing-conversions)
    std::for_each(data.begin(), data.end(), [](char &c) { c = ::tolower(c); });
    return data;
 }

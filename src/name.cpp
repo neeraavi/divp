@@ -14,4 +14,3 @@ std::ostream &operator<<(std::ostream &o, Name const &n)
 {
    return o << n.ticker << ";" << n.name << "; " << n.sector << endl;
 }
-

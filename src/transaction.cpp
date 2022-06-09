@@ -15,8 +15,7 @@ Transaction::Transaction(vector<string> v)
    ym = v[1] + "-" + v[2];
 }
 
-          std::ostream
-          & operator<<(std::ostream &os, TransactionType t)
+std::ostream &operator<<(std::ostream &os, TransactionType t)
 {
    switch (t)
    {

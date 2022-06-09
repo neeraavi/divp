@@ -1,10 +1,10 @@
 #pragma once
 #include "name.hpp"
+#include "vectorAndMapUtils.hpp"
+#include <iostream>
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
-#include <iostream>
-#include "vectorAndMapUtils.hpp"
 
 class Name
 {
@@ -12,11 +12,11 @@ class Name
    StringVectorMap sectorMap{};
 
  public:
-   std::string ticker{};//NOLINT
-   std::string name{};//NOLINT
-   std::string sector{};//NOLINT
+   std::string ticker{}; // NOLINT
+   std::string name{};   // NOLINT
+   std::string sector{}; // NOLINT
 
-   explicit Name(std::vector<std::string>vec );
+   explicit Name(std::vector<std::string> vec);
    void initialize();
-   friend std::ostream &operator<<(std::ostream & o, Name const &n);
+   friend std::ostream &operator<<(std::ostream &o, Name const &n);
 };
