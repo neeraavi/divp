@@ -2,8 +2,21 @@
 #include "akt.hpp"
 #include "nameFileProcessor.hpp"
 #include <iostream>
+#include <ncurses.h>
 
 using namespace std;
+
+void showScreen()
+{
+   initscr();
+   WINDOW *win = newwin(3, 80, 20, 1);
+   refresh();
+   box(win, 0, 0);
+   mvwprintw(win, 1, 1, "abc def ghi");
+   wrefresh(win);
+   getch();
+   endwin();
+}
 
 int main(int argc, char *argv[])
 {
@@ -23,5 +36,6 @@ int main(int argc, char *argv[])
    const auto akt = AktFileProcessor(aktFile);
    akt.print();
 
+   showScreen();
    return 0;
 }

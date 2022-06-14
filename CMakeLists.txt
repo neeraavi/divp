@@ -24,3 +24,4 @@ include/divp/strUtils.hpp
 include/divp/transaction.hpp
 include/divp/vectorAndMapUtils.hpp
 )
+target_link_libraries(divp ncurses)
