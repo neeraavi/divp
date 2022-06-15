@@ -9,11 +9,40 @@ using namespace std;
 void showScreen()
 {
    initscr();
-   WINDOW *win = newwin(3, 80, 20, 1);
+   const auto mainStartRow=1;
+   const auto mainStartCol=1;
+   const auto mainRows=20;
+   const auto mainCols=120;
+   WINDOW *main = newwin(mainRows, mainCols, mainStartRow, mainStartCol);
+   box(main, 0, 0);
+
+   const auto transStartRow=mainStartRow+mainRows;
+   const auto transStartCol=mainStartCol;
+   const auto transRows=30;
+   const auto transCols=mainCols/2;
+   WINDOW *trans = newwin(transRows, transCols, transStartRow, transStartCol);
+   box(trans, 0, 0);
+
+   const auto divStartRow=transStartRow;
+   const auto divStartCol=transStartCol+transCols;
+   const auto divRows=transRows;
+   const auto divCols=transCols;
+   WINDOW *div = newwin(divRows, divCols, divStartRow, divStartCol);
+   box(div, 0, 0);
+
+   const auto statusStartRow=transStartRow+transRows;
+   const auto statusStartCol=mainStartCol;
+   const auto statusRows=3;
+   const auto statusCols=mainCols;
+   WINDOW *status = newwin(statusRows, statusCols, statusStartRow, statusStartCol);
+   box(status, 0, 0);
+
    refresh();
-   box(win, 0, 0);
-   mvwprintw(win, 1, 1, "abc def ghi");
-   wrefresh(win);
+   mvwprintw(status, 1, 1, "abc def ghi");
+   wrefresh(main);
+   wrefresh(status);
+   wrefresh(trans);
+   wrefresh(div);
    getch();
    endwin();
 }
