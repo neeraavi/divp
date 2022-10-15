@@ -46,14 +46,6 @@ def create_transactions_table(conn):
                 ); """
     create_table(conn, sql_create_transactions_table)
 
-def insert_transaction(conn, item):
-    sql = ''' INSERT INTO transactions(name,operation,yy,mm,dd,nos,cost)
-              VALUES(?,?,?,?,?,?,?) '''
-    cur = conn.cursor()
-    cur.execute(sql, item)
-    conn.commit()
-    return cur.lastrowid
-
 
 def process_file(conn, filename, line_processor, meta_processor):
     res=[]
@@ -65,22 +57,28 @@ def process_file(conn, filename, line_processor, meta_processor):
     meta_processor(conn, res)
 
 
-def dummy_processor(conn, res_list):
-    pass
-
 def transactions_processor(conn, line):
-    if not line.startswith('#'):
+    if line.startswith('#'):
+        return None
+    else:
         (name, yy, mm, dd, operation, nos, cost) = line.replace(' ', '').split('-')
         # print(line)
         print(name, yy, mm, dd)
         item = (name, operation, yy, mm, dd, nos, cost)
-        insert_transaction(conn, item)
-    return None
+        return item
+        #insert_transaction(conn, item)
 
+def insert_transactions_from_list(conn, transactions_list):
+    sql = ''' INSERT INTO transactions(name,operation,yy,mm,dd,nos,cost)
+              VALUES(?,?,?,?,?,?,?) '''
+    cur = conn.cursor()
+    cur.executemany(sql, transactions_list)
+    conn.commit()
+    return cur.lastrowid
 
 def fill_transactions(conn):
     f = 'd:/tmp/sql/akt.txt'
-    process_file(conn, f, transactions_processor, dummy_processor)
+    process_file(conn, f, transactions_processor, insert_transactions_from_list)
 
 
 def drop_table(conn, tab):
@@ -214,7 +212,9 @@ def insert_dividends_from_list(conn, div_list):
     return cur.lastrowid
 
 def dividend_processor(conn, line):
-    if not line.startswith('#'):
+    if line.startswith('#'):
+        return None
+    else:
         parts = line.replace(' ', '').split('-')
         (name, freq, mm, yy, nos, dps, before, after,where)=(0,0,0, 0,0,0, 0,0,'.')
 #        print(line, len(parts))
