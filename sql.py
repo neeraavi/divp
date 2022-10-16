@@ -293,13 +293,22 @@ def create_results_table(conn):
     drop_table(conn, 'results')
     sql = """ CREATE TABLE "results" (
         "name"  TEXT,
+        "f" TEXT,
+        "factor" INTEGER,        
         "bought"    REAL,
         "sold"  REAL,
         "current"   REAL,
         "paid"  REAL,
         "rcvd"  REAL,
         "invested"  REAL,
-        "allocation" REAL
+        "allocation" REAL,
+        "dps" REAL,
+        "edps_b" REAL,
+        "edps_a" REAL,
+        "dps_next_b" REAL,
+        "dps_next_a" REAL,        
+        "ann_div_b" REAL,
+        "ann_div_a" REAL
     )    """
     create_table(conn, sql)
 
@@ -340,7 +349,66 @@ def calc_current_nos(conn):
     rows = cur.fetchall()
     for row in rows:
         print(row)
+    return total_invested
 
+def calc_yield(conn):
+    sql='select distinct name from transactions'
+    cur = conn.cursor()
+    cur.execute(sql)    
+    rows = cur.fetchall()
+    names=[]
+    for row in rows:
+        names.append(row[0])
+    print(names)
+    for name in names:
+        sql = ''' select * from dividends where name="'''+name+'''" 
+                  order by yy desc, mm desc
+                  limit 1 '''
+        cur.execute(sql)    
+        rows = cur.fetchall()
+        if rows is not None and len(rows)>0:
+            if len(rows[0])>5:
+               (name, f, mm, yy, nos, dps, before, after, where) = rows[0]
+               effective_dps_before = before/nos
+               effective_dps_after = after/nos
+               factor=fact(f)
+               sql = '''update results 
+                        set 
+                          "dps"={_dps}, 
+                          "f"="{_f}", 
+                          "factor"={_factor},
+                          "edps_b"={_before}/{_nos},
+                          "edps_a"={_after}/{_nos}
+                        where "name"="{_name}"
+                    '''.format(_dps=dps, _f=f, _factor=factor, _name=name, _before=before, _nos=nos, _after=after)
+               #print(sql)
+               cur.execute(sql)    
+
+    sql="update results set ann_div_b=round(current*factor*edps_b), ann_div_a=round(current*factor*edps_a), dps_next_b=round(edps_b*current), dps_next_a=round(edps_a*current)"
+    cur.execute(sql)    
+    sql = 'select sum("invested"), sum("ann_div_b"), sum("ann_div_a") from results'
+    cur.execute(sql)    
+    rows = cur.fetchall()
+    (invested, annual_div_before_tax, annual_div_after_tax) = rows[0] 
+    monthly_div_before_tax = int(annual_div_before_tax/12)
+    monthly_div_after_tax  = int(annual_div_after_tax/12)
+    yoc_before_tax=round(annual_div_before_tax/invested*100,2)
+    yoc_after_tax=round(annual_div_after_tax/invested*100,2)
+    print(int(invested), '//',
+         int(annual_div_before_tax), monthly_div_before_tax, yoc_before_tax, '% //',
+         int(annual_div_after_tax), monthly_div_after_tax, yoc_after_tax, '%')
+
+def fact(freq):
+    if freq=='Q':
+        return 4
+    if freq=='M':
+        return 12
+    if freq=='B':
+        return 2
+    if freq=='A':
+        return 1
+    print("Unknown freq", freq)
+    return 1
 
 def main():
     database = r"d:/tmp/sql/testdb.db"
@@ -361,6 +429,7 @@ def main():
         # create_dividend_calendar(conn)
         # fill_dividend_calendar(conn)
         calc_current_nos(conn)
+        calc_yield(conn)
 
 
 if __name__ == '__main__':
