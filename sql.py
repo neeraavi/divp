@@ -308,7 +308,9 @@ def create_results_table(conn):
         "dps_next_b" REAL,
         "dps_next_a" REAL,        
         "ann_div_b" REAL,
-        "ann_div_a" REAL
+        "ann_div_a" REAL,
+        yoc_b REAL,
+        yoc_a REAL
     )    """
     create_table(conn, sql)
 
@@ -384,7 +386,15 @@ def calc_yield(conn):
                #print(sql)
                cur.execute(sql)    
 
-    sql="update results set ann_div_b=round(current*factor*edps_b), ann_div_a=round(current*factor*edps_a), dps_next_b=round(edps_b*current), dps_next_a=round(edps_a*current)"
+    sql='''update results 
+        set 
+        ann_div_b=round(current*factor*edps_b), 
+        ann_div_a=round(current*factor*edps_a), 
+        dps_next_b=round(edps_b*current), 
+        dps_next_a=round(edps_a*current),
+        yoc_b=round(current*factor*edps_b/invested*100,2),
+        yoc_a=round(current*factor*edps_a/invested*100,2)
+        '''
     cur.execute(sql)    
     sql = 'select sum("invested"), sum("ann_div_b"), sum("ann_div_a") from results'
     cur.execute(sql)    
