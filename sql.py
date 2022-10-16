@@ -289,26 +289,54 @@ def insert_div_cal_entry(conn, cal_name, item):
     return cur.lastrowid
 
 
-def calc_current_nos(conn):
-    #    sql = 'select distinct name from transactions'
-    #    cur = conn.cursor()
-    #    cur.execute(sql)
-    #    rows = cur.fetchall()
-    sql = """
-    WITH group1 AS (
-  SELECT name, sum(nos) as bought, sum(cost) as paid  from TRANSACTIONs where operation="Buy" group by name
-),
-group2 AS (
-  SELECT name, sum(nos) as sold , sum(cost) as rcvd from TRANSACTIONs where operation="Sell" group by name
-)
-SELECT group1.name, bought, COALESCE(sold,' ') as sold, bought-COALESCE(sold,0) as currrent, paid, coalesce(rcvd,' ') as rcvd, case when bought-COALESCE(sold,0)>0 then paid-coalesce(rcvd,0) else ' ' end as invested
-  FROM group1
-  left JOIN group2 ON group1.name = group2.name 
-;
-"""
+def create_results_table(conn):
+    drop_table(conn, 'results')
+    sql = """ CREATE TABLE "results" (
+        "name"  TEXT,
+        "bought"    REAL,
+        "sold"  REAL,
+        "current"   REAL,
+        "paid"  REAL,
+        "rcvd"  REAL,
+        "invested"  REAL,
+        "allocation" REAL
+    )    """
+    create_table(conn, sql)
 
+def sum_invested(conn):
+    sql = """ select sum(invested) from results """
     cur = conn.cursor()
-    cur.execute(sql)
+    cur.execute(sql)    
+    rows = cur.fetchall()
+    return rows[0][0]
+
+
+def calc_current_nos(conn):
+    create_results_table(conn)
+    sql = """ insert into results("name", "bought", "sold", "current", "paid", "rcvd", "invested")
+        WITH 
+        group1 AS (
+          SELECT name, sum(nos) as bought, sum(cost) as paid  from TRANSACTIONs where operation="Buy" group by name
+        ),
+        group2 AS (
+          SELECT name, sum(nos) as sold , sum(cost) as rcvd from TRANSACTIONs where operation="Sell" group by name
+        )
+        SELECT 
+          group1.name, bought, COALESCE(sold,' ') as sold, 
+            bought-COALESCE(sold,0) as currrent, paid, coalesce(rcvd,' ') as rcvd, 
+            case when bought-COALESCE(sold,0)>0 then paid-coalesce(rcvd,0) else ' ' end as invested
+          FROM group1
+          left JOIN group2 ON group1.name = group2.name 
+        ;
+        """
+    cur = conn.cursor()
+    cur.execute(sql)    
+    total_invested = sum_invested(conn)
+    print(total_invested)
+    sql = 'update results set allocation = round(invested/' + str(total_invested) + '*100 ,2)'
+    cur.execute(sql)    
+    sql = 'select * from results'
+    cur.execute(sql)    
     rows = cur.fetchall()
     for row in rows:
         print(row)
